@@ -77,6 +77,52 @@ Services communicate through APIs and events, not through direct database access
   - AWS (MSK, RDS, S3, Databricks on AWS)  
   - GCP (Confluent Cloud, Cloud SQL, GCS, Databricks on GCP)
 
+## Solution Architecture Overview
+
+### 1. Frontend Layer
+- **Angular Portal (UI)**  
+  Users interact through the **Angular UI** to manage surveys, assignments, and data.  
+  This UI communicates with the **Backend-for-Frontend (BFF)**.
+
+### 2. Backend Layer
+- **Node.js BFF (Backend-for-Frontend)**  
+  Acts as a middle layer between the UI and backend services, aggregating data and serving the UI.  
+  - Aggregates responses from multiple **Drupal domain services**.
+
+- **Drupal Domain Services**  
+  Each of the following services is an **independent Drupal app**, running in its own container and owning its own **Postgres DB**.  
+  These services are independent and communicate via events and APIs:
+  - **Survey Planning Service**  
+  - **Data Capture Service**  
+  - **Validation & Curation Service**  
+  - **Reference Data Service**  
+  - **Identity & Access Service**
+
+### 3. Event Layer
+- **Kafka/Redpanda Event Streaming**  
+  - Used to communicate changes and events across the system, ensuring decoupling between services.  
+  - Each service produces **domain events** (e.g., `survey.assignment.created`, `data.capture.updated`) that are published to **Redpanda/Kafka**.
+
+### 4. Analytics Layer
+- **Real-time Analytics (Streaming)**  
+  - **Apache Spark/Flink** processes events from **Redpanda** for real-time insights (e.g., monitoring field progress, data issues).
+
+- **Batch Analytics**  
+  - **Databricks** runs **batch processing** jobs and **Delta Live Tables (DLT)** to aggregate and analyze historical data.
+
+- **Analytics Dashboards**  
+  - Business Intelligence (BI) dashboards (e.g., **Power BI**, **Looker**, **Databricks SQL**).  
+  - These provide **insights and visualizations** to decision-makers based on historical or real-time data.
+
+### 5. Data Layer
+- **Postgres Databases**  
+  Each domain service (e.g., Survey Planning, Data Capture) has its own **Postgres database** (multi-schema or independent per service).
+
+### 6. Cloud Layer (Deployment and Integration)
+- **Cloud Services** (Azure, AWS, GCP)  
+  - The system can be deployed on multiple cloud platforms, with services like **Azure Event Hubs**, **AWS MSK**, and **GCP Pub/Sub** for event streaming, and **PostgreSQL** for database services.
+  - **Databricks** for big data analytics and batch processing.
+
 ## Outcomes
 
 - Alignment with business processes for agricultural survey management  
