@@ -1,0 +1,48 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">Agri-Frame</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain"
+            aria-controls="navMain" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navMain" class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto">
+        @for (item of nav.items(); track item.label) {
+          <li class="nav-item dropdown">
+            @if (!item.children?.length) {
+              <a class="nav-link" routerLinkActive="active"
+                 [routerLink]="item.path" ariaCurrentWhenActive="page">
+                @if (item.icon) { <i class="bi me-1" [ngClass]="item.icon"></i> }
+                {{ item.label }}
+              </a>
+            } @else {
+              <a class="nav-link dropdown-toggle" href="#" role="button"
+                 data-bs-toggle="dropdown" aria-expanded="false">
+                @if (item.icon) { <i class="bi me-1" [ngClass]="item.icon"></i> }
+                {{ item.label }}
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                @for (c of item.children; track c.label) {
+                  <li>
+                    <a class="dropdown-item" [routerLink]="c.path">
+                      @if (c.icon) { <i class="bi me-1" [ngClass]="c.icon"></i> }
+                      {{ c.label }}
+                    </a>
+                  </li>
+                }
+              </ul>
+            }
+          </li>
+        }
+      </ul>
+
+      <div class="ms-3">
+        <button class="btn btn-sm btn-light me-2" (click)="auth.loginAsDemo('Planner')">Planner</button>
+        <button class="btn btn-sm btn-light me-2" (click)="auth.loginAsDemo('Analyst')">Analyst</button>
+        <button class="btn btn-sm btn-light" (click)="auth.loginAsDemo('Admin')">Admin</button>
+      </div>
+    </div>
+  </div>
+</nav>
