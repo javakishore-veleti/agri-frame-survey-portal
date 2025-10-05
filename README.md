@@ -133,7 +133,7 @@ Services communicate through APIs and events, not through direct database access
 
 ## Enterprise Architecture (EA) and. Solution Architecture (SA) for Agri-Frame Survey Portal
 
-| **Aspect**                         | **Enterprise Architecture (EA) for Agri-Frame Survey Portal**                                          | **Solution Architecture (SA) for Agri-Frame Survey Portal**                                             |
+| **Aspect**                         | **Enterprise Architecture (EA) **                                          | **Solution Architecture (SA) **                                             |
 |------------------------------------|------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
 | **Scope**                          | Focuses on **the entire Agri-Frame Survey Portal** ecosystem, its alignment with **business goals**, and how it fits within the larger agricultural survey ecosystem. | Focuses on the **Agri-Frame Survey Portal system** itself: how the **UI, BFF, domain services, and analytics** integrate and work together to solve specific business needs. |
 | **Focus**                          | **Strategic alignment** with agricultural survey management business goals, overall technology stack, cloud adoption, and data integration across multiple services. | **Detailed design and technical implementation** of the Agri-Frame Survey Portal: the specific components, their interactions, technologies used, and how it will be implemented. |
