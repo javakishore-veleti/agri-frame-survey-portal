@@ -1,0 +1,34 @@
+version: "3.9"
+services:
+  redpanda:
+    image: redpandadata/redpanda:v24.1.8
+    command:
+      - redpanda start --overprovisioned --smp 1 --memory 1G --reserve-memory 0M --check=false
+    ports:
+      - "${KAFKA_PORT:-9092}:9092"
+      - "${REDPANDA_ADMIN:-9644}:9644"
+    volumes:
+      - rpdata:/var/lib/redpanda/data
+
+  console:
+    image: redpandadata/console:latest   # Redpanda Console
+    environment:
+      KAFKA_BROKERS: "redpanda:9092"
+    ports:
+      - "8081:8080"
+    depends_on:
+      - redpanda
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest   # Kafka UI
+    container_name: kafka-ui
+    ports:
+      - "8082:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: redpanda:9092
+    depends_on:
+      - redpanda
+
+volumes:
+  rpdata:

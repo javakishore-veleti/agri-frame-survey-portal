@@ -1,0 +1,10 @@
+{
+  "name": "agri-frame-survey-portal",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Agri-Frame Survey Portal - monorepo for agricultural survey management.",
+  "scripts": {
+    "local-dev-stack:up": "bash devops/local-development/tech_stack_up.sh",
+    "local-dev-stack:down": "bash devops/local-development/tech_stack_down.sh"
+  }
+}
