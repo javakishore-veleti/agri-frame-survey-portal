@@ -40,3 +40,4 @@ django-markdown
 
 python-dotenv
 cryptography
+django_extensions
