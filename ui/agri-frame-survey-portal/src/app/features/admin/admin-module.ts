@@ -1,6 +1,7 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { AdminRoutingModule } from './admin-routing-module';
 import { NavRegistry } from '@shared/components/navigation/nav.registry';
+import {UsersComponent} from '@features/admin/pages/users/users';
 
 @NgModule({
   imports: [AdminRoutingModule],
