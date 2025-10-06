@@ -20,6 +20,7 @@ export const appConfig: ApplicationConfig = {
             label: 'Admin', requiredPermission: 'admin.access', icon: 'bi-gear',
             children: [
               { label: 'Users',   path: '/admin/users',   requiredPermission: 'admin.users' },
+              { label: 'About Users',   path: '/admin/about-users',   requiredPermission: 'admin.users' },
               { label: 'Roles',   path: '/admin/roles',   requiredPermission: 'admin.roles' },
               { label: 'Tenants', path: '/admin/tenants', requiredPermission: 'admin.tenants' }
             ]
