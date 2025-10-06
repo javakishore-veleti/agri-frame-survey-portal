@@ -39,3 +39,4 @@ opencv-python
 django-markdown
 
 python-dotenv
+cryptography

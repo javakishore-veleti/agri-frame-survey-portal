@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 import os
+from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -75,14 +76,13 @@ INSTALLED_APPS = [
 ]
 
 INSTALLED_APPS += ["drf_spectacular_sidecar"]
+
 SPECTACULAR_SETTINGS = {
     "SWAGGER_UI_DIST": "SIDECAR",
     "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
     "REDOC_DIST": "SIDECAR",
     "EXCLUDE_PATHS": [r"^/api/admin/v1/auth/token/$", r"^/api/admin/v1/auth/refresh/$"],
 }
-
-
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
@@ -165,6 +165,16 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+SIMPLE_JWT = {
+    "ALGORITHM": "RS256",
+    "SIGNING_KEY": open(os.getenv("JWT_PRIVATE_KEY_PATH")).read(),
+    "VERIFYING_KEY": open(os.getenv("JWT_PUBLIC_KEY_PATH")).read(),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
+}
+
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
@@ -178,4 +188,7 @@ REST_FRAMEWORK = {
         "rest_framework.filters.SearchFilter",
         "rest_framework.filters.OrderingFilter",
     ),
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 25,  # default page size
 }
+

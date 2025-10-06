@@ -7,6 +7,7 @@ from django.db.models import QuerySet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import serializers, viewsets, filters
 from rest_framework.permissions import BasePermission, IsAuthenticated
+from rest_framework_simplejwt.tokens import AccessToken
 
 from .models import Tenant, Role, UserTenant, UserRole
 from .serializer import (
@@ -15,6 +16,17 @@ from .serializer import (
     UserTenantSerializer,
     UserRoleSerializer,
 )
+
+from django.http import JsonResponse
+from jwt.utils import base64url_encode
+from cryptography.hazmat.primitives import serialization
+from django.conf import settings
+
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.tokens import AccessToken, UntypedToken
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 
 User = get_user_model()
 
@@ -157,3 +169,61 @@ class UserViewSet(viewsets.ModelViewSet):
     filterset_fields = ["is_active", "is_staff", "is_superuser"]
     search_fields = ["username", "email", "first_name", "last_name"]
     ordering_fields = ["id", "email", "username", "date_joined", "last_login"]
+
+
+def jwks(request):
+    key = serialization.load_pem_private_key(
+        settings.SIMPLE_JWT["SIGNING_KEY"].encode(), password=None
+    )
+    public_key = key.public_key().public_bytes(
+        serialization.Encoding.PEM,
+        serialization.PublicFormat.SubjectPublicKeyInfo
+    )
+    pub_numbers = key.public_key().public_numbers()
+    jwk = {
+        "kty": "RSA",
+        "alg": "RS256",
+        "use": "sig",
+        "n": base64url_encode(pub_numbers.n.to_bytes((pub_numbers.n.bit_length() + 7) // 8, "big")).decode(),
+        "e": base64url_encode(pub_numbers.e.to_bytes((pub_numbers.e.bit_length() + 7) // 8, "big")).decode(),
+        "kid": "agri-rs256-key",
+    }
+    return JsonResponse({"keys": [jwk]})
+
+
+import jwt
+from django.conf import settings
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def whoami(request):
+    """
+    Diagnostic endpoint: show authenticated user and decoded JWT claims.
+    Works no matter what request.auth contains.
+    """
+    auth_header = request.headers.get("Authorization", "")
+    token_value = auth_header.replace("Bearer ", "").strip()
+    claims = {}
+
+    if token_value:
+        try:
+            claims = jwt.decode(
+                token_value,
+                settings.SIMPLE_JWT["VERIFYING_KEY"],
+                algorithms=[settings.SIMPLE_JWT["ALGORITHM"]],
+            )
+        except jwt.ExpiredSignatureError:
+            claims = {"error": "Token expired"}
+        except jwt.InvalidTokenError as e:
+            claims = {"error": f"Invalid token: {str(e)}"}
+
+    return Response(
+        {
+            "user": str(request.user),
+            "claims": claims,
+        }
+    )
