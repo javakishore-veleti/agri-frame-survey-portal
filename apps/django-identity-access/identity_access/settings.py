@@ -76,6 +76,7 @@ INSTALLED_APPS = [
 ]
 
 INSTALLED_APPS += ["drf_spectacular_sidecar"]
+INSTALLED_APPS += ["django_extensions"]
 
 SPECTACULAR_SETTINGS = {
     "SWAGGER_UI_DIST": "SIDECAR",
