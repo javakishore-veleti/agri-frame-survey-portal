@@ -1,0 +1,41 @@
+# --- Core Framework ---
+Django
+
+# --- REST Framework & API Extensions ---
+djangorestframework
+django-filter
+django-url-filter
+drf-yasg
+drf-spectacular
+drf-dynamic-fields
+
+# --- Auth & Security ---
+djangorestframework-simplejwt
+python-jose
+django-request-logging
+django-cors-headers
+django-sslserver
+
+# --- Database & ORM Enhancements ---
+psycopg[binary]          # ✅ PostgreSQL driver
+pymongo                  # MongoDB (optional)
+PyMySQL                  # MySQL (optional)
+django-db-connection-pool
+django-jsonfield
+django-yamlfield
+django-mysql             # only if connecting to MySQL
+django-background-tasks
+
+# --- Utilities ---
+pandas
+numpy
+requests
+simplejson
+dependency-injector
+overrides
+opencv-python
+
+# --- Markdown / Formatting ---
+django-markdown
+
+python-dotenv

@@ -1,1 +1,76 @@
-<p>users works!</p>
+<h2>Users</h2>
+<p>
+  A User is any authenticated individual or system identity that interacts with the portal’s APIs, data, or survey workflows.
+</p>
+<ul>
+  <li>Users may belong to one or more tenants (organizations or programs).</li>
+  <li>hHve one or more roles (permissions / capabilities)..</li>
+</ul>
+
+<p>
+2. User Hierarchy & Ecosystem
+</p>
+
+<p>
+Here’s how your ecosystem aligns conceptually:
+</p>
+
+<p>
+Level	Entity	Description
+Top-Level	Admin Tenant	The USDA-level or managing organization that governs configuration, policies, and multi-tenant onboarding.
+Tenant	Agency, Program, or Partner Organization (e.g., FPAC, NRCS, AMS, University Extension Office)
+User	Individual working within one or more tenants (Farmer, Surveyor, Partner Staff, USDA Employee, etc.)
+Role	Permission bundle defining what a user can do within that tenant (Admin, Data Entry, Reviewer, Viewer, etc.)
+</p>
+
+<p>
+3. User Types (Personas)
+</p>
+
+Below is a classification of core user types your system will likely manage, all represented in the same user entity but distinguished by roles and tenant association.
+
+<p>
+User Type	Typical Tenant	Purpose / Responsibilities	Example Roles
+</p>
+<p>
+USDA System Administrator	Admin Tenant (USDA HQ)	Manages all tenants, roles, and platform settings.	SYSTEM_ADMIN, TENANT_MANAGER
+USDA Program Manager / Employee	USDA Program Tenant (e.g., NRCS, FPAC)	Oversees survey planning, allocates resources, monitors data quality.	PROGRAM_MANAGER, SURVEY_REVIEWER
+Surveyor / Field Agent	USDA or Partner Tenant	Collects field-level or farmer-level data using the Survey Portal UI or mobile app.	SURVEYOR, FIELD_AGENT
+Partner Organization Staff	Partner Tenant (e.g., University Extension, NGO)	Supports USDA surveys, assists farmers, or validates data.	PARTNER_USER, DATA_STEWARD
+Farmer / Producer (Customer)	Tenant representing farm / co-op region	Provides self-reported data for surveys or validations.	FARMER, RESPONDENT
+External Vendor / Analyst	Vendor Tenant	Supports analytics, data validation, or system integration.	EXTERNAL_ANALYST, INTEGRATION_USER
+Guest / Read-only Access	Any tenant	Read-only data access for transparency or training.	VIEWER, TRAINING_USER
+
+<p>
+Technical Representation (for your APIs)
+Entity	Key Fields	Notes
+User	id, username, email, tenantCode, roles[], type, status	Common table for all users
+Tenant	id, code, name, contactEmail, settings	Links to many users
+Role	id, label, permissions[]	Assignable across tenants
+User-Tenant-Role mapping	user_id, tenant_code, role_id	Defines context (if multi-tenant support needed)
+</p>
+
+<p>
+Role Granularity Suggestion
+</p>
+<p>
+Category	Role Name	Capability Highlights
+Platform	SYSTEM_ADMIN	Manage tenants, roles, global settings
+Tenant	TENANT_ADMIN	Manage users & roles within tenant
+Survey Lifecycle	SURVEY_MANAGER, SURVEYOR, DATA_REVIEWER	Create, collect, and validate surveys
+Partner Operations	PARTNER_USER, DATA_STEWARD	Collaborate and share data with USDA
+Customer	FARMER, RESPONDENT	Provide self-service submissions
+Read-only	VIEWER, TRAINING_USER	Non-interactive data access
+</p>
+
+<p>
+Summary — Quick Mental Model
+</p>
+<p>
+Concept	Meaning in Agri-Frame
+User	A person with credentials.
+Tenant	An organization the user belongs to.
+Role	What that user can do.
+Admin Tenant	Manages all tenants and users (root level).
+Admin User	Has global privileges across tenants.
+</p>

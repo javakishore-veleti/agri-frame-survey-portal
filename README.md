@@ -21,7 +21,7 @@ The portal is designed using a shared-nothing, microservices-based, domain-drive
 Each domain has its own service, database, and event publishing mechanism.  
 Services communicate through APIs and events, not through direct database access.
 
-### Core Domain Services (Drupal Back-Office Applications)
+### Core Domain Services (Django Back-Office Applications)
 
 - **Survey Planning Service**  
   Manages survey design, assignments, and workloads. Defines what gets measured, where, and when.
@@ -87,10 +87,10 @@ Services communicate through APIs and events, not through direct database access
 ### 2. Backend Layer
 - **Node.js BFF (Backend-for-Frontend)**  
   Acts as a middle layer between the UI and backend services, aggregating data and serving the UI.  
-  - Aggregates responses from multiple **Drupal domain services**.
+  - Aggregates responses from multiple **Django domain services**.
 
-- **Drupal Domain Services**  
-  Each of the following services is an **independent Drupal app**, running in its own container and owning its own **Postgres DB**.  
+- **Django Domain Services**  
+  Each of the following services is an **independent Django app**, running in its own container and owning its own **Postgres DB**.  
   These services are independent and communicate via events and APIs:
   - **Survey Planning Service**  
   - **Data Capture Service**  
@@ -140,14 +140,27 @@ Services communicate through APIs and events, not through direct database access
 | **Key Objective**                  | Ensure that the entire **Agri-Frame Survey Portal platform** supports the long-term **business objectives** of streamlining agricultural survey management and decision-making. | Implement **Agri-Frame Survey Portal** as a working system, ensuring the **UI, BFF**, and **domain services** are integrated efficiently to meet the business objectives. |
 | **Components**                     | - **Business Process Integration**: Survey Planning, Data Capture, Validation, and Analytics. <br> - **Cloud and Infrastructure Integration**: Event Hubs (Azure), MSK (AWS), Postgres, Databricks. <br> - **Event-Driven Architecture**: Kafka/Redpanda for event streaming. | - **Angular UI** (Frontend) <br> - **Node.js BFF** (Backend-for-Frontend) <br> - **Domain Services** (Survey Planning, Data Capture, Validation) <br> - **Event Streaming** (Kafka/Redpanda) <br> - **Analytics** (Databricks, Dashboards) |
 | **Level of Detail**                | **High-level, abstract view** of the system architecture: focusing on how **different business domains** and **technologies** integrate. | **Detailed view**: How each component (UI, BFF, domain services, event streaming, analytics) **communicates**, how data flows between them, and the **technical implementation** of each service. |
-| **Technologies Covered**           | High-level strategic decisions on cloud platforms (e.g., Azure, AWS, GCP), data infrastructure, and integration points (Kafka, Databricks, Postgres). | Specific technologies used in the **Agri-Frame Survey Portal** system such as **Node.js**, **Angular**, **Drupal** (Postgres-backed), **Kafka/Redpanda**, **Databricks**, and cloud services (Azure, AWS, GCP). |
+| **Technologies Covered**           | High-level strategic decisions on cloud platforms (e.g., Azure, AWS, GCP), data infrastructure, and integration points (Kafka, Databricks, Postgres). | Specific technologies used in the **Agri-Frame Survey Portal** system such as **Node.js**, **Angular**, **Django** (Postgres-backed), **Kafka/Redpanda**, **Databricks**, and cloud services (Azure, AWS, GCP). |
 | **Architecture Type**              | **Holistic view** of **Agri-Frame Survey Portal’s** place within the broader enterprise ecosystem of agricultural survey management, data integration, and decision-making. | **Specific system design** of the **Agri-Frame Survey Portal** application and services, focusing on how each service integrates, communicates, and functions within the platform. |
 | **Stakeholders Involved**          | - **Business Leaders**: To ensure the system aligns with agricultural survey management goals. <br> - **Enterprise Architects**: For defining overall architecture principles and tech strategy. <br> - **Cloud Engineers**: For deploying on platforms like Azure, AWS, GCP. | - **Solution Architects**: For designing the system architecture of the portal. <br> - **Developers**: For implementing the UI, BFF, and backend services. <br> - **DevOps Engineers**: For continuous deployment and scalability of services. |
 | **Long-Term vs. Short-Term**       | Focuses on **long-term IT strategy**, scaling the system, and ensuring it supports the agricultural survey industry’s needs at an enterprise level. | Focuses on the **short-term implementation** of the **Agri-Frame Survey Portal** solution, ensuring it is **built, deployed, and operational**. |
-| **Example for Agri-Frame**         | **Agri-Frame Survey Portal** as part of an enterprise solution for agricultural survey management. Integration with multiple **cloud providers** and **data platforms** (Azure Event Hubs, AWS MSK, GCP Databricks). | The **Agri-Frame Survey Portal**: A system with **Angular UI**, **Node.js BFF**, **Drupal Services**, **Kafka/Redpanda Event Streaming**, **Postgres databases**, and **Databricks analytics**. |
+| **Example for Agri-Frame**         | **Agri-Frame Survey Portal** as part of an enterprise solution for agricultural survey management. Integration with multiple **cloud providers** and **data platforms** (Azure Event Hubs, AWS MSK, GCP Databricks). | The **Agri-Frame Survey Portal**: A system with **Angular UI**, **Node.js BFF**, **Django Services**, **Kafka/Redpanda Event Streaming**, **Postgres databases**, and **Databricks analytics**. |
 | **Data Flow**                      | High-level data flows: How **survey data** flows across **multiple services**, from **data collection to analytics**, and integrates with **cloud data platforms** for long-term reporting. | Detailed data flows within the portal: How **Survey Planning**, **Data Capture**, **Validation**, and **Analytics** components communicate, share data, and respond to events published to the **Kafka/Redpanda** bus. |
 | **Governance & Standards**         | Defines **enterprise-wide IT governance**, **data security**, **cloud standards**, and **compliance** policies. | Focuses on **solution-specific standards**, such as **API design**, **data validation rules**, **event-driven architecture**, and **security** for the Agri-Frame Portal system. |
-| **Example Diagram**                | A **high-level systems view** showing integration between the **Survey Planning**, **Data Capture**, **Validation**, and **Analytics** domains, along with **cloud integration** (Azure Event Hubs, AWS MSK). | A **solution-specific diagram** detailing the interactions between **Angular UI**, **Node.js BFF**, **Drupal domain services**, **Kafka/Redpanda Event Streaming**, and **Databricks analytics**. |
+| **Example Diagram**                | A **high-level systems view** showing integration between the **Survey Planning**, **Data Capture**, **Validation**, and **Analytics** domains, along with **cloud integration** (Azure Event Hubs, AWS MSK). | A **solution-specific diagram** detailing the interactions between **Angular UI**, **Node.js BFF**, **Django domain services**, **Kafka/Redpanda Event Streaming**, and **Databricks analytics**. |
 
 ---
 
+## Creating Django Projects
+
+```shell
+cd apps
+python -m pip install Django
+pip install --upgrade pip
+ 
+mkdir -p django-identity-access
+
+django-admin startproject identity_access django-identity-access
+cd django-identity-access
+python manage.py runserver
+```
