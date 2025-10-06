@@ -170,6 +170,10 @@ class UserViewSet(viewsets.ModelViewSet):
     search_fields = ["username", "email", "first_name", "last_name"]
     ordering_fields = ["id", "email", "username", "date_joined", "last_login"]
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["request"] = self.request
+        return context
 
 def jwks(request):
     key = serialization.load_pem_private_key(

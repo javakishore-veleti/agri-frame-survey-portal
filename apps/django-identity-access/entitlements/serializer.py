@@ -56,6 +56,7 @@ class UserRoleSerializer(serializers.HyperlinkedModelSerializer):
         queryset=Role.objects.all(),
         view_name="role-detail",
     )
+
     # tenant_code is a simple CharField on the model → included automatically
 
     class Meta:
@@ -63,4 +64,13 @@ class UserRoleSerializer(serializers.HyperlinkedModelSerializer):
         fields = "__all__"
         extra_kwargs = {
             "url": {"view_name": "userrole-detail"},
+        }
+
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = "__all__"
+        extra_kwargs = {
+            "url": {"view_name": "entitlements:user-detail", "lookup_field": "pk"},
         }

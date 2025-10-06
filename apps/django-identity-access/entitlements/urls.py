@@ -13,8 +13,10 @@ from .views import (
 
 app_name = "entitlements"
 
+
 class AgrTokenObtainPairView(TokenObtainPairView):
     serializer_class = AgrTokenObtainPairSerializer
+
 
 router = DefaultRouter()
 router.register(r"tenants", TenantViewSet, basename="tenant")
